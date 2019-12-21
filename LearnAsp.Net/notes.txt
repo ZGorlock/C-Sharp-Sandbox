@@ -1,0 +1,477 @@
+Default.aspx    - main webpage
+Default.aspx.cs - C# code
+
+
+
+HELLO WORLD
+<asp:Label runat="server" id="HelloWorldLabel"></asp:Label>
+
+HelloWorldLabel.Text = "Hello World!";
+
+
+
+EVENTS
+Creates a Textbox and Button
+    <asp:Label runat="server" id="HelloWorldLabel"></asp:Label>
+    <br /><br />
+    <asp:TextBox runat="server" id="TextInput" /> 
+    <asp:Button runat="server" id="GreetButton" text="Say Hello!" />
+
+C# Code for if you click the button
+HelloWorldLabel.Text = "Hello " + TextInput.Text;
+
+Creates a dropdown list
+    <asp:DropDownList runat="server" id="GreetList" autopostback="true" onselectedindexchanged="GreetList_SelectedIndexChanged">
+        <asp:ListItem value="no one">No one</asp:ListItem>
+        <asp:ListItem value="world">World</asp:ListItem>
+        <asp:ListItem value="universe">Universe</asp:ListItem>
+    </asp:DropDownList>
+
+C# code for if you select from the dropdown list
+HelloWorldLabel.Text = "Hello, " + GreetList.SelectedValue;
+
+
+
+USER CONTROL
+piece of page that can be reused on multiple pages
+add new item/user control web form
+
+.ascx code
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="UserInfoBoxControl.ascx.cs" Inherits="UserInfoBoxControl" %>
+<b>Information about <%= this.UserName %></b>
+<br /><br />
+<%= this.UserName %> is <%= this.UserAge %> years old and lives in <%= this.UserCountry %>
+
+C# code is a class with elements and accessors to elements
+remove namespace
+
+add this to page to include user control
+<%@ Register TagPrefix="My" TagName="UserInfoBoxControl" Src="~/UserInfoBoxControl.ascx" %>
+
+call this to access user control
+<My:UserInfoBoxControl runat="server" />
+
+you can send the properties or include them in codebehind Page
+<My:UserInfoBoxControl runat="server" UserName="John Doe" UserAge="45" UserCountry="Australia" />
+
+MyUserInfoBoxControl.UserName = "Jane Doe";
+MyUserInfoBoxControl.UserAge = 33;
+MyUserInfoBoxControl.UserCountry = "Germany";
+
+
+
+VALIDATION
+makes sure forms are filled out properly
+
+RequiredFieldValidators
+    Your name:<br />
+    <asp:TextBox runat="server" id="txtName" />
+    <asp:RequiredFieldValidator runat="server" id="reqName" controltovalidate="txtName" errormessage="Please enter your name!" />
+    <br /><br />
+    <asp:Button runat="server" id="btnSubmitForm" text="Ok" />
+
+enableclientscript="false" makes validation server side
+use if (Page.IsValid) to test if page is valid before running code in codebehind
+
+CompareValidators
+	Small number:<br />
+	<asp:TextBox runat="server" id="txtSmallNumber" /><br /><br />
+	Big number:<br />
+	<asp:TextBox runat="server" id="txtBigNumber" /><br />
+	<asp:CompareValidator runat="server" id="cmpNumbers" controltovalidate="txtSmallNumber" controltocompare="txtBigNumber" operator="LessThan" type="Integer" errormessage="The first number should be smaller than the second number!" /><br />
+
+to compare to static value change controltocompare to valuetocompare
+
+RangeValidator
+        Date:<br />
+        <asp:TextBox runat="server" id="txtDate" />
+        <asp:RangeValidator runat="server" id="rngDate" controltovalidate="txtDate" type="Date" minimumvalue="01-01-2006" maximumvalue="12-31-2006" errormessage="Please enter a valid date within 2006!" />
+
+RegularExpressionValidator
+	4 digit number:<br />
+	<asp:TextBox runat="server" id="txtNumber" />
+	<asp:RegularExpressionValidator runat="server" id="rexNumber" controltovalidate="txtNumber" validationexpression="^[0-9]{4}$" errormessage="Please enter a 4 digit number!" />
+design, look at regularexpressionvalidator's properties, select regex and bubble will offer default options
+
+CustomValidator
+	Custom text:<br />
+	<asp:TextBox runat="server" id="txtCustom" />
+	<asp:CustomValidator runat="server" id="cusCustom" controltovalidate="txtCustom" onservervalidate="cusCustom_ServerValidate" errormessage="The text must be exactly 8 characters long!" />
+
+C# code for validator
+    if(e.Value.Length == 8)
+        e.IsValid = true;
+    else
+        e.IsValid = false;
+
+ValidationGroup
+SetFocusOnError (true, false)
+Display (Dynamic, None, Static)
+
+
+
+CACHING
+<%@ OutputCache duration="10" varybyparam="None" %>
+varybyparam - makes the cache dependent on a variable
+
+varybycontrol - makes the cache dependent on a control
+<%@ OutputCache duration="10" varybyparam="none" varybycontrol="NameOfControl" %>
+
+varybycustom - dependent on a custom string
+make sure you have global.asax file, if not Add new Global Application Class
+override GetVaryByCustomString
+	public override string GetVaryByCustomString(HttpContext context, string custom)
+	{
+	    if(custom == "Browser")
+	    {
+	        return context.Request.Browser.Browser;
+	    }
+	    return String.Empty;
+	}
+<%@ OutputCache duration="120" varybyparam="None" varybycustom="Browser" %>
+
+varybyheader - vary based on headers that browsers send
+<%@ OutputCache duration="120" varybyparam="None" varybyheader="Accept-Language" %>
+
+Substitution
+forces certain things to be outside the cache
+        Fresh datestamp:<br />
+        <asp:Substitution runat="server" id="UnCachedArea" methodname="GetFreshDateTime" />
+C# code
+    protected static string GetFreshDateTime(HttpContext context)
+    {
+        return DateTime.Now.ToString();
+    }
+
+Object Caching
+can cache a single object instead of a whole page
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ArrayList datestamps;
+            if (Cache["datestamps"] == null)
+            {
+                datestamps = new ArrayList();
+                datestamps.Add(DateTime.Now);
+                datestamps.Add(DateTime.Now);
+                datestamps.Add(DateTime.Now);
+
+                Cache.Add("datestamps", datestamps, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(0, 0, 60), System.Web.Caching.CacheItemPriority.Default, null);
+            }
+            else
+                datestamps = (ArrayList)Cache["datestamps"];
+
+            foreach (DateTime dt in datestamps)
+                Response.Write(dt.ToString() + "<br />");
+        }
+retrieve from cache using Cache["key"]
+Cache.Add(key, object name, CacheDependency, expiration absolute, experation relative, callback function when object expires)
+
+
+
+STATE
+Cookies
+save user data for later use by website
+    <div runat="server" id="BodyTag">
+    <asp:DropDownList runat="server" id="ColorSelector" autopostback="true" onselectedindexchanged="ColorSelector_IndexChanged">
+        <asp:ListItem value="White" selected="True">Select color...</asp:ListItem>
+        <asp:ListItem value="Red">Red</asp:ListItem>
+        <asp:ListItem value="Green">Green</asp:ListItem>
+        <asp:ListItem value="Blue">Blue</asp:ListItem>
+    </asp:DropDownList>
+    </div>
+C# code
+    public partial class _Default : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Request.Cookies["BackgroundColor"] != null)
+            {
+                ColorSelector.SelectedValue = Request.Cookies["BackgroundColor"].Value;
+                BodyTag.Style["background-color"] = ColorSelector.SelectedValue;
+            }
+        }
+
+        protected void ColorSelector_IndexChanged(object sender, EventArgs e)
+        {
+            BodyTag.Style["background-color"] = ColorSelector.SelectedValue;
+            HttpCookie cookie = new HttpCookie("BackgroundColor");
+            cookie.Value = ColorSelector.SelectedValue;
+            cookie.Expires = DateTime.Now.AddHours(1);
+            Response.SetCookie(cookie);
+        }
+    }
+
+Sessions
+sessions only last until your browser is closed
+c# code
+    public partial class _Default : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["BackgroundColor"] != null)
+            {
+                ColorSelector.SelectedValue = Session["BackgroundColor"].ToString();
+                BodyTag.Style["background-color"] = ColorSelector.SelectedValue;
+            }
+        }
+
+        protected void ColorSelector_IndexChanged(object sender, EventArgs e)
+        {
+            BodyTag.Style["background-color"] = ColorSelector.SelectedValue;
+            Session["BackgroundColor"] = ColorSelector.SelectedValue;
+        }
+    }
+
+ViewState
+saves form fields
+        <asp:TextBox runat="server" id="NameField" />
+        <asp:Button runat="server" id="SubmitForm" onclick="SubmitForm_Click" text="Submit & set name" />
+        <asp:Button runat="server" id="RefreshPage" text="Just submit" />
+        <br /><br />
+        Name retrieved from ViewState: <asp:Label runat="server" id="NameLabel" />
+C# code
+
+	protected void Page_Load(object sender, EventArgs e)
+	{
+            if (ViewState["NameOfUser"] != null)
+                NameLabel.Text = ViewState["NameOfUser"].ToString();
+            else
+                NameLabel.Text = "Not set yet...";
+	}
+
+        protected void SubmitForm_Click(object sender, EventArgs e)
+        {
+            ViewState["NameOfUser"] = NameField.Text;
+            NameLabel.Text = NameField.Text;
+        }
+
+
+
+SENDING EMAILS
+uses System.Net.Mail namespace
+needs an SMTP server
+	if local use ISP SMTP
+	if hosted, use websites provided SMTP
+	smtp.your-isp.com || mail.your-isp.com
+c# code
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.To.Add("ZGorlock@gmail.com");
+                mailMessage.From = new MailAddress("test@mail-address.com");
+                mailMessage.Subject = "ASP.NET e-mail test";
+                mailMessage.Body = "Hello world,\n\nThis is an ASP.NET test e-mail!";
+                SmtpClient smtpClient = new SmtpClient("smtp-server.cfl.rr.com");
+                smtpClient.Send(mailMessage);
+                Response.Write("E-mail sent!");
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Could not send the e-mail - error: " + ex.Message);
+		}
+	}
+
+attatchments
+mailMessage.Attachments.Add(new Attachment(Server.MapPath("~/image.jpg")));
+
+multiple recipients
+mailMessage.To.Add("your.own@mail-address.com");
+mailMessage.To.Add("another@mail-address.com");
+
+name of sender
+mailMessage.From = new MailAddress("me@mail-address.com", "My Name");
+
+html email
+mailMessage.IsBodyHtml = true;
+mailMessage.Body = "Hello <b>world!</b>";
+
+cc and bcc fields
+mailMessage.CC.Add("me@mail-address.com");
+mailMessage.Bcc.Add("me2@mail-address.com");
+
+priority
+mailMessage.Priority = MailPriority.High;
+
+
+
+FILE UPLOAD CONTROL
+    <asp:FileUpload id="FileUploadControl" runat="server" />
+    <asp:Button runat="server" id="UploadButton" text="Upload" onclick="UploadButton_Click" />
+    <br /><br />
+    <asp:Label runat="server" id="StatusLabel" text="Upload status: " />
+C# code
+        protected void UploadButton_Click(object sender, EventArgs e)
+        {
+            if (FileUploadControl.HasFile)
+            {
+                try
+                {
+                    if (FileUploadControl.PostedFile.ContentType == "image/jpeg")
+                    {
+                        if (FileUploadControl.PostedFile.ContentLength < 102400)
+                        {
+                            string filename = Path.GetFileName(FileUploadControl.FileName);
+                            FileUploadControl.SaveAs(Server.MapPath("~/") + filename);
+                            StatusLabel.Text = "Upload status: File uploaded!";
+                        }
+                        else
+                            StatusLabel.Text = "Upload status: The file has to be less than 100 kb!";
+                    }
+                    else
+                        StatusLabel.Text = "Upload status: Only JPEG files are accepted!";
+                }
+                catch (Exception ex)
+                {
+                    StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                }
+            }
+        }
+can check for different aspects of the file
+
+
+
+LOCALIZATION
+Local Implict Localization
+multiple languages
+	<asp:Label runat="server" ID="lblHelloWorld" Text="Hello, world!" meta:resourcekey="lblHelloWorld" />
+add ASP.NET folder (App+LocalResourcces)
+add Resource files
+	Default.aspx.resx
+		lblHelloWorld.Text	"Hello, World!"
+	Default.aspx.es-ES.resx
+		lblHelloWorld.Text	"Hola, Mundo!"
+	Defualt.aspx.de-DE.resx
+		lblHelloWorld.Text	"Hallo, Welch!"
+change uiculture in directive
+	UICulture="de-DE"
+	UICulture="es-ES"
+if you dont have a language, the default is used
+
+CultureInfo class
+System.Globalization namespace
+add Culture="Auto" element to directive
+	<% Response.Write("Your current culture: " + System.Globalization.CultureInfo.CurrentCulture.DisplayName);    %>
+Culture is used for date, numbers, sorting
+UICulture is used for visual parts
+	<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Localization._Default" Culture="Auto" UICulture="Auto" %>
+
+        <% Response.Write("Your current culture: " + System.Globalization.CultureInfo.CurrentCulture.DisplayName);    %>
+        <br />
+        <% Response.Write("Current date, in a culture specific format: " + DateTime.Now.ToString()); %>
+        <br />
+        <% Response.Write("Current date, in a culture specific format: " + DateTime.Now.ToString(System.Globalization.CultureInfo.GetCultureInfo("de-DE").DateTimeFormat)); %>
+        <br />
+        <asp:Label runat="server" ID="lblHelloWorld" Text="Hello, world!" meta:resourcekey="lblHelloWorld" />
+
+Local Resources
+	used only for one page
+	App_LocalResources
+	needs resx for each page in each language
+Global Resources
+	can be used from anywhere
+	App_GlobalResources
+	only needs one for each language but can get messy
+
+Implicit Localization
+	within markup
+	<asp:Label runat="server" ID="lblHelloWorld" Text="Hello, world!" Font-Names="Verdana" ForeColor="Blue" meta:resourcekey="lblHelloWorld" />
+	Resource Files
+		Default.aspx.resx
+			lblHelloWorld.Text	"Hello, World!"
+			lblHelloWorld.Fore	"Blue"
+			lblHelloWorld.Font-name	"Verdana"
+		Default.aspx.es-ES.resx
+			lblHelloWorld.Text	"Hola, Mundo!"
+			lblHelloWorld.Fore	"Green"
+			lblHelloWorld.Font-name	"Ariel"
+		Defualt.aspx.de-DE.resx
+			lblHelloWorld.Text	"Hallo, Welch!"
+			lblHelloWorld.Fore	"Red"
+			lblHelloWorld.Font-name	"Times New Roman"
+Explict
+	explicitly get values from resx
+	can get from other objects' properties
+	<asp:Label runat="server" ID="lblHelloWorld2" Text="<%$ Resources:lblHelloWorld.Text %>" Font-Names="<%$ Resources:lblHelloWorld.Font-Names %>" ForeColor="<%$ Resources:lblHelloWorld.ForeColor %>"  />
+	syntax: <%$ Resources:[resource class name,]RowName %>
+		dont need resource class name if local
+		if in MyGlobalResources.resx use <%$ Resources: MyGlobalResources,NameOfRow %>
+
+Localizing Code Behind
+	Direct
+		lblHelloWorld.Text = Resources.MyGlobalResources.HelloWorldString;
+	GetLocalResourceObject()
+		lblHelloWorld.Text = GetLocalResourceObject("lblHelloWorld.Text").ToString();
+	GetGlobalResourceObject()
+		lblHelloWorld.Text = GetGlobalResourceObject("MyGlobalResources", "HelloWorldString").ToString();
+
+UICulture and Culture
+	happens automatically based on your browser settings
+	page directive
+		<%@ Page Language="C#" Culture="en-US" UICulture="en-US" %>
+		or in code behind
+		    protected override void InitializeCulture()
+		    {
+		        Page.Culture = "en-GB";
+		        Page.UICulture = "en-GB";
+		    }
+	globally
+		in web.config
+		<globalization uiCulture="en-US" culture="en-US" />
+	can still be overridden on individual pages
+
+
+
+MySQL
+in web.global
+  <connectionStrings>
+    <add name="MySQLConnStr" connectionString="Driver={MySQL ODBC 5.3 ANSI Driver};Database=learnmysql;Server=localhost;UID=Test;PWD=password;"/>
+  </connectionStrings>
+in page_load
+            try
+            {
+                using (OdbcConnection connection = new OdbcConnection(ConfigurationManager.ConnectionStrings["MySQLConnStr"].ConnectionString))
+                {
+                    connection.Open();
+                    using (OdbcCommand command = new OdbcCommand("SELECT name FROM pet", connection))
+                    using (OdbcDataReader dr = command.ExecuteReader())
+                    {
+                        while (dr.Read())
+                            Response.Write(dr["name"].ToString() + "<br />");
+                        dr.Close();
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("An error occured: " + ex.Message);
+            }
+use
+	using System.Data.Odbc;
+	using System.Configuration;
+
+Databinding
+	<asp:DropDownList runat="server" id="ddlUsers" datavaluefield="id" datatextfield="name" />
+c# code
+	try
+	{
+	    using(OdbcConnection connection = new OdbcConnection(ConfigurationManager.ConnectionStrings["MySQLConnStr"].ConnectionString))
+	    {
+	        connection.Open();
+	        using(OdbcCommand command = new OdbcCommand("SELECT id, name FROM test_users", connection))
+	        using(OdbcDataReader dr = command.ExecuteReader())
+	        {
+	            ddlUsers.DataSource = dr;
+	            ddlUsers.DataBind();
+	            dr.Close();
+	            
+	        }
+	        connection.Close();
+	    }
+	}
+	catch(Exception ex)
+	{
+	    Response.Write("An error occured: " + ex.Message);
+	}

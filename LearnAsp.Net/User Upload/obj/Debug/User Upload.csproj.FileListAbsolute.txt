@@ -1,0 +1,21 @@
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\User Upload.dll.config
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\User Upload.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\User Upload.pdb
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Antlr3.Runtime.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\AspNet.ScriptManager.bootstrap.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\AspNet.ScriptManager.jQuery.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Microsoft.AspNet.FriendlyUrls.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Microsoft.ScriptManager.MSAjax.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Microsoft.ScriptManager.WebForms.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Newtonsoft.Json.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\System.Web.Optimization.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\WebGrease.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\System.Web.Optimization.xml
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Antlr3.Runtime.pdb
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Newtonsoft.Json.xml
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\bin\Microsoft.AspNet.FriendlyUrls.xml
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\obj\Debug\User Upload.csprojResolveAssemblyReference.cache
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\obj\Debug\User Upload.dll
+C:\Users\ZGorlock\Coding\C#\Visual Studios Workplace\LearnAsp.Net\User Upload\obj\Debug\User Upload.pdb

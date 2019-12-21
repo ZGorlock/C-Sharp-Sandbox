@@ -1,0 +1,6 @@
+c:\users\zgorlock\Coding\C#\Visual Studios Workplace\LearnCs\LearnCs\bin\Debug\LearnCs.exe.config
+c:\users\zgorlock\Coding\C#\Visual Studios Workplace\LearnCs\LearnCs\bin\Debug\LearnCs.exe
+c:\users\zgorlock\Coding\C#\Visual Studios Workplace\LearnCs\LearnCs\bin\Debug\LearnCs.pdb
+c:\users\zgorlock\Coding\C#\Visual Studios Workplace\LearnCs\LearnCs\obj\Debug\LearnCs.csprojResolveAssemblyReference.cache
+c:\users\zgorlock\Coding\C#\Visual Studios Workplace\LearnCs\LearnCs\obj\Debug\LearnCs.exe
+c:\users\zgorlock\Coding\C#\Visual Studios Workplace\LearnCs\LearnCs\obj\Debug\LearnCs.pdb

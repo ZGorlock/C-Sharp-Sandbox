@@ -1,0 +1,396 @@
+namespace <project>
+    class <filename>
+        static void Main(string[] args)
+
+
+
+
+OUTPUT
+Console.WriteLine()
+Console.ReadLine()
+Console.ReadKey()
+
+
+
+
+VARIABLES
+int = 1
+float = 1f;
+var x = 1;
+
+enum xType
+{
+  Type1 = 1,
+  Type2 = 2,
+}
+
+
+
+
+ARRAYS
+int[] arr = new int[10];
+arr.Length
+arr[0]
+
+int[,] arr = new int[10, 10]
+
+arr.Sort
+arr.Reverse
+
+
+
+
+LISTS
+List<int> list = new List<int>()
+list.Add(1)
+list.AddRange(arr)
+
+List<string> food = new List<string>()
+food.Add("apple")
+list.Remove("banana")
+list.RemoveAt(2);
+list.Count
+
+List<string> vegetable = new List<string>()
+vegetable.Add("broccoli")
+food.AddRange(vegetable)
+
+
+
+
+DICTIONARIES
+Dictionary<string, long> dic = new Dictionary<string, long>()
+dic.Add("Alex", 4154346543)
+dic["Jessica"] = 4159484588
+dic.Containskey["Alex"]
+dic.Count
+
+
+
+
+STRINGS
+string s = "string"
+string emptyString = String.Empty
+
+string first = "Eric"
+string last = "Smith"
+string full = first + " " + last
+
+string sentence = "I like to play "
+sentence += "chess."
+
+int x = 1, y = 2, sum = x + y
+string sumCalc = String.Format("{0} + {1} = {2}", x, y, sum)
+
+string s = "full string"
+string p = s.Substring(5)
+string p2 = s.Substring(5, 3)
+
+string name = "John Doe"
+string name = name.Replace("John", "Eric")
+
+string f = "apple,orange,banana"
+fruit.IndexOf("orange")
+fruit.IndexOf("lemon")
+
+name.ToUpper
+name.ToLower
+
+
+
+
+
+IF STATEMENTS
+if (bool)
+
+
+
+
+SWITCH STATEMENTS
+switch (var)
+{
+    case 0:
+        break;
+    case 1:
+        break;
+    default:
+        break;
+}
+
+
+
+
+
+FOR LOOPS
+for (int i = 0; i < x; i++)
+break //kills loop
+continue //skips to next iteration
+
+
+
+
+WHILE LOOPS
+while (bool)
+
+
+
+
+
+USER INPUT
+int num;
+Console.WriteLine("Enter a number: ");
+num = Convert.ToInt32(Console.ReadLine());
+
+
+
+
+METHODS
+<visibility> <return type> <name>(<parameters>)
+
+parameters
+	ref - pass as reference
+	out - pass as reference, doesnt need to be initialized
+	params - pass any number of parameters to a function store in an array
+
+
+
+
+
+CLASSES
+class Car
+{
+    private string color;
+
+    public Car(string color)
+    {
+        this.color = color;
+    }
+
+    public string Describe()
+    {
+        return "This car is " + Color;
+    }
+
+    public string Color
+    {
+        get { return color; }
+        set { color =  value; }
+    }
+}
+
+PROPERTY
+public string Color
+{
+    get
+    {
+        return color.ToUpper();
+    }
+    set
+    {
+        if (value == "Red")
+            color = value;
+        else
+            Console.WriteLine("This car can only be Red!");
+    }
+}
+
+CONSTRUCTOR
+public Car(string color) : this()
+{
+    this.color = color;
+}
+public Car(string param1, string param2) : this(param1)
+{
+}
+
+DESTRUCTOR
+~Car()
+{
+}
+
+
+
+
+OVERLOADING
+string Substring(int startIndex)
+string Substring(int startIndex, int length)
+
+
+
+
+VISIBILITY
+	public - anyone can reach this from everywhere
+	protected - only class and derived classes can reach this
+	internal - reached from same project only
+	protected internal - the same as internal, but also inherited even if in another project
+	private - can only be reached from same class
+
+
+
+
+STATIC
+members that are static hae only one instance
+static classes can not be instanciated
+
+
+
+
+INHERITANCE
+public class Animal
+{
+    public void Greet()
+    {
+        Console.WriteLine("Hello, I'm some sort of animal!");
+    }
+}
+
+public class Dog : Animal
+{
+
+}
+
+Animal animal = new Animal();
+animal.Greet();
+Dog dog = new Dog();
+dog.Greet();
+
+
+public class Animal
+{
+    public virtual void Greet()
+    {
+        Console.WriteLine("Hello, I'm some sort of animal!");
+    }
+}
+
+public class Dog : Animal
+{
+    public override void Greet()
+    {
+        base.Greet();
+        Console.WriteLine("Hello, I'm a dog!");
+    }
+}
+
+add virtual keyword for base class, and override keyword for inheriting function
+base lets you access the parent method
+
+
+
+
+ABSTRACT CLASSES
+cannot be instanciated, base class for others
+
+
+ABSTRACT METHODS
+abstract class FourLeggedAnimal
+{
+    public abstract string Describe();
+}
+
+this forces any subclass to contain an override Describe() method
+you can typecast a subclass as its base class if its methods are abstract
+
+
+
+
+INTERFACES
+like abstract class
+contains only abstract methods and properties
+serves as a contract that things that inherit it will contain those methods
+classes can inherit multiple interfaces
+
+    interface IAnimal
+    {
+        string Describe();
+
+        string Name
+        {
+            get;
+            set;
+        }
+    }
+
+all elements in an interface are public by default
+
+
+
+
+ENUMERATIONS
+at start of class
+public enum <Group> { <elements> }
+by default first element is 0 but you can set it to whatever you want
+
+Group var = Group.element
+var = (Group)<int>
+
+string[] values = Enum.GetNames(typeof(Group))
+
+
+
+
+EXCEPTIONS
+try/catch block
+catch (Exception ex) gives your the exception
+ex.GetMessage gives error message
+ex.GetType().ToString() gives you the type
+you can put the type in a catch block
+catch (IndexOutOfRangeException ex) only catches exceptions of that type
+can have multiple catch blocks like a switch
+finally block can be used to be executed at the end of a catch block
+
+
+
+
+STRUCTS
+same as classes
+less expensive
+passes as value not reference
+
+
+
+
+FILE IO
+using System.IO;
+File.Exists("filename")
+File.ReadAllText("filename")
+File.WriteAllText("filename")
+File.AppendAllText("filename")
+
+StreamWriter var = new StreamWriter("filename")
+var.Write(string)
+var.Close()
+
+
+
+
+MANIPULATING FILES AND DIRECTORIES
+File.Exists()
+File.Delete()
+File.Move()
+
+Directory.Exists()
+Directory.Delete()
+Directory.Move()
+Directory.CreateDirectory()
+
+
+
+
+FILE AND DIRECTORY INFO
+FileInfo fi = new FileInfo(path)
+DirectoryInfo di = new DirectoryInfo(path)
+test if var != null
+
+FileInfo[] files = di.GetFiles()
+DirectoryInfo[] dirs = di.GetDirectories()
+
+fi.Name
+fi.Length
+fi.LastWriteTime
+fi.FullName
+
+di.Name
+
+FileInfo[] files = di.GetFiles("*.exe")
+FileInfo[] files = di.GetFiles("*.exe", SearchOptions.AllDirectories)
